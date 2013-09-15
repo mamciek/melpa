@@ -1,0 +1,19 @@
+/var/log/nginx/melpa/melpa*.log {
+	daily
+	create 0640 www-data melpa
+	compress
+	dateext
+	missingok
+	missingok
+	notifempty
+	rotate 36500
+	sharedscripts
+	prerotate
+		if [ -d /etc/logrotate.d/httpd-prerotate ]; then \
+			run-parts /etc/logrotate.d/httpd-prerotate; \
+		fi; \
+	endscript
+	postrotate
+		[ ! -f /var/run/nginx.pid ] || kill -USR1 `cat /var/run/nginx.pid`
+	endscript
+}
